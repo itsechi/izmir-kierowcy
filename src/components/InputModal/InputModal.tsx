@@ -3,7 +3,18 @@ import { DayPicker } from 'react-day-picker';
 import { pl } from 'date-fns/locale';
 import { getDayOfWeek } from '../../helpers/calendarHelpers';
 
-const InputModal = ({
+type InputModalProps = {
+  handleSubmit: () => void;
+  handleCloseModal: () => void;
+  driverName: string;
+  setDriverName: (name: string) => void;
+  selectedDay?: Date;
+  setSelectedDay: (date: Date) => void;
+  weekDay?: string;
+  setWeekDay: (day: string) => void;
+};
+
+const InputModal: React.FC<InputModalProps> = ({
   handleSubmit,
   handleCloseModal,
   driverName,

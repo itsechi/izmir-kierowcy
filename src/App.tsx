@@ -1,33 +1,20 @@
 import { useState } from 'react';
 import './App.css';
 import 'react-day-picker/style.css';
-import {
-  arrayUnion,
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
-import { db } from './config/firebaseConfig';
-import { Item } from './types';
 import useFetchItems from './hooks/useFetchItems';
 import ItemList from './components/ItemList/ItemList';
 import InputModal from './components/InputModal/InputModal';
+import { addNewDriverEntry, updateDriverName } from './helpers/firebaseHelpers';
 
-const MyDatePicker = () => {
+const App = () => {
   const { items, setItems } = useFetchItems();
-  const [selectedDay, setSelectedDay] = useState<Date>();
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>();
   const [weekDay, setWeekDay] = useState<string | undefined>();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [driverName, setDriverName] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   const handleSubmit = async () => {
     if (!selectedDay) return;
@@ -37,9 +24,7 @@ const MyDatePicker = () => {
 
     try {
       if (existingItem) {
-        const docRef = doc(db, 'kierowcy', existingItem.id);
-        await updateDoc(docRef, { names: arrayUnion(driverName) });
-
+        await updateDriverName(existingItem.id, driverName);
         setItems((prevItems) =>
           prevItems.map((item) =>
             item.id === existingItem.id
@@ -48,14 +33,7 @@ const MyDatePicker = () => {
           )
         );
       } else {
-        const newDocRef = doc(collection(db, 'kierowcy'));
-        const newItem: Item = {
-          id: newDocRef.id,
-          names: [driverName],
-          date: selectedDayString,
-        };
-        await setDoc(newDocRef, newItem);
-
+        const newItem = await addNewDriverEntry(selectedDayString, driverName);
         setItems((prevItems) => [...prevItems, newItem]);
       }
     } catch (error) {
@@ -93,4 +71,4 @@ const MyDatePicker = () => {
   );
 };
 
-export default MyDatePicker;
+export default App;
