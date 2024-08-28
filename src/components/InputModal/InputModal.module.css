@@ -16,10 +16,15 @@
   padding: 20px;
   border-radius: 8px;
   width: 90%;
-  /* Mobile-first approach */
-  max-width: 400px;
+  max-width: 350px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalCalendar {
+  align-self: center;
+  margin-bottom: 1rem;
 }
 
 .modalInput {

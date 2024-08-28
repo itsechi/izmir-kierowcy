@@ -1,5 +1,3 @@
-export const today = new Date().toISOString().split('T')[0];
-
 export const getDayOfWeek = (dateString: Date) => {
   const date = new Date(dateString);
   const daysOfWeek = [

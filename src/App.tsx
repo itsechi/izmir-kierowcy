@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './App.css';
 import 'react-day-picker/style.css';
 import useFetchItems from './hooks/useFetchItems';
 import ItemList from './components/ItemList/ItemList';
@@ -8,7 +7,7 @@ import { addNewDriverEntry, updateDriverName } from './helpers/firebaseHelpers';
 
 const App = () => {
   const { items, setItems } = useFetchItems();
-  const [selectedDay, setSelectedDay] = useState<Date | undefined>();
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date());
   const [weekDay, setWeekDay] = useState<string | undefined>();
   const [driverName, setDriverName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,12 +33,22 @@ const App = () => {
         );
       } else {
         const newItem = await addNewDriverEntry(selectedDayString, driverName);
-        setItems((prevItems) => [...prevItems, newItem]);
+        setItems((prevItems) => {
+          const updatedItems = [...prevItems, newItem];
+          const sortedItems = updatedItems.sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            return dateA - dateB;
+          });
+          return sortedItems;
+        });
       }
     } catch (error) {
       console.error('Error updating or creating document:', error);
     }
 
+    setDriverName('');
+    setSelectedDay(new Date());
     handleCloseModal();
   };
 

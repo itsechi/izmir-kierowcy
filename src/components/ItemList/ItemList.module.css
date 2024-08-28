@@ -1,0 +1,33 @@
+.item {
+  border-radius: 10px;
+  margin: 1rem;
+  background-color: rgb(241, 241, 241);
+  display: flex;
+  justify-content: space-between;
+}
+
+.itemToday {
+  border-radius: 10px;
+  margin: 1rem;
+  background-color: rgba(154, 187, 6, 0.233);
+  display: flex;
+  justify-content: space-between;
+}
+
+.itemDateString {
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+}
+
+.itemDate {
+  font-weight: normal;
+  color: rgb(109, 109, 109);
+  display: block;
+}
+
+.itemNames {
+  text-align: left;
+  padding: 0.5rem 1rem;
+  list-style: none;
+  text-align: right;
+}

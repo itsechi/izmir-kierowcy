@@ -15,7 +15,12 @@ const useFetchItems = () => {
           const item = doc.data() as Item;
           fetchedItems.push(item);
         });
-        setItems(fetchedItems);
+        const sortedItems = fetchedItems.sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateA - dateB;
+        });
+        setItems(sortedItems);
       } catch (error) {
         console.error('Error fetching items:', error);
       }

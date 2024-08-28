@@ -21,7 +21,6 @@ const InputModal: React.FC<InputModalProps> = ({
   setDriverName,
   selectedDay,
   setSelectedDay,
-  weekDay,
   setWeekDay,
 }) => {
   const onDaySelect = (date: Date) => {
@@ -42,9 +41,9 @@ const InputModal: React.FC<InputModalProps> = ({
           mode="single"
           selected={selectedDay}
           onSelect={onDaySelect}
-          footer={weekDay ? `Selected: ${weekDay}` : 'Pick a day.'}
           locale={pl}
           required
+          className={styles.modalCalendar}
         />
 
         <h2>Wpisz imię kierowcy</h2>
