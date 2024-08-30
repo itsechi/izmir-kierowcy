@@ -2,6 +2,7 @@ import styles from './InputModal.module.css';
 import { DayPicker } from 'react-day-picker';
 import { pl } from 'date-fns/locale';
 import { getDayOfWeek } from '../../helpers/calendarHelpers';
+import { Button } from '../Button/Button';
 
 type InputModalProps = {
   handleSubmit: () => void;
@@ -55,9 +56,9 @@ const InputModal: React.FC<InputModalProps> = ({
           className={styles.modalInput}
         />
 
-        <button className={styles.submitBtn} onClick={handleSubmit}>
+        <Button onClick={handleSubmit} styling={'submitBtn'}>
           Dodaj
-        </button>
+        </Button>
       </div>
     </div>
   );

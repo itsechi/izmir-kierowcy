@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import 'react-day-picker/style.css';
 import useFetchItems from './hooks/useFetchItems';
 import ItemList from './components/ItemList/ItemList';
 import InputModal from './components/InputModal/InputModal';
 import { addNewDriverEntry, updateDriverName } from './helpers/firebaseHelpers';
+import { Button } from './components/Button/Button';
 
 const App = () => {
   const { items, setItems } = useFetchItems();
@@ -11,6 +12,8 @@ const App = () => {
   const [weekDay, setWeekDay] = useState<string | undefined>();
   const [driverName, setDriverName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const listContainerRef = useRef<HTMLDivElement>(null);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -52,11 +55,27 @@ const App = () => {
     handleCloseModal();
   };
 
+  useEffect(() => {
+    if (!listContainerRef.current) return;
+
+    const todayDateString = new Date().toDateString();
+    const todayItem = items.find((item) => item.date === todayDateString);
+    if (todayItem) {
+      const index = items.indexOf(todayItem);
+      const itemElement = listContainerRef.current.children[
+        index
+      ] as HTMLDivElement;
+      if (itemElement) {
+        itemElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [items]);
+
   return (
     <div className="my-date-picker">
-      <button className="open-modal-btn" onClick={handleOpenModal}>
+      <Button onClick={handleOpenModal} styling={'secondaryBtn'}>
         Wpisz imię kierowcy
-      </button>
+      </Button>
 
       {isModalOpen && (
         <InputModal
@@ -71,7 +90,7 @@ const App = () => {
         />
       )}
 
-      <div className="item-list">
+      <div className="item-list" ref={listContainerRef}>
         {items.map((item) => (
           <ItemList key={item.id} item={item} />
         ))}
