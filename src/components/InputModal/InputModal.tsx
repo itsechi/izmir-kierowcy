@@ -1,33 +1,29 @@
 import styles from './InputModal.module.css';
 import { DayPicker } from 'react-day-picker';
 import { pl } from 'date-fns/locale';
-import { getDayOfWeek } from '../../helpers/calendarHelpers';
 import { Button } from '../Button/Button';
 
 type InputModalProps = {
-  handleSubmit: () => void;
+  formState: {
+    selectedDay: Date;
+    driverName: string;
+  };
   handleCloseModal: () => void;
-  driverName: string;
-  setDriverName: (name: string) => void;
-  selectedDay?: Date;
-  setSelectedDay: (date: Date) => void;
-  weekDay?: string;
-  setWeekDay: (day: string) => void;
+  handleSubmit: () => void;
+  handleSelectedDayChange: (date: Date) => void;
+  handleDriverNameChange: (name: string) => void;
 };
 
 const InputModal: React.FC<InputModalProps> = ({
-  handleSubmit,
   handleCloseModal,
-  driverName,
-  setDriverName,
-  selectedDay,
-  setSelectedDay,
-  setWeekDay,
+  formState,
+  handleSubmit,
+  handleSelectedDayChange,
+  handleDriverNameChange,
 }) => {
   const onDaySelect = (date: Date) => {
     if (!date) return;
-    setWeekDay(getDayOfWeek(date));
-    setSelectedDay(date);
+    handleSelectedDayChange(date);
   };
 
   return (
@@ -40,7 +36,7 @@ const InputModal: React.FC<InputModalProps> = ({
 
         <DayPicker
           mode="single"
-          selected={selectedDay}
+          selected={formState.selectedDay}
           onSelect={onDaySelect}
           locale={pl}
           required
@@ -50,8 +46,8 @@ const InputModal: React.FC<InputModalProps> = ({
         <h2>Wpisz imię kierowcy</h2>
         <input
           type="text"
-          value={driverName}
-          onChange={(e) => setDriverName(e.target.value)}
+          value={formState.driverName}
+          onChange={(e) => handleDriverNameChange(e.target.value)}
           placeholder="Wpisz imię kierowcy"
           className={styles.modalInput}
         />
