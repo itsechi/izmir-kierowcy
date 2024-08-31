@@ -3,7 +3,12 @@ import 'react-day-picker/style.css';
 import useFetchItems from './hooks/useFetchItems';
 import ItemList from './components/ItemList/ItemList';
 import InputModal from './components/InputModal/InputModal';
-import { addNewDriverEntry, updateDriverName } from './helpers/firebaseHelpers';
+import {
+  addNewItem,
+  deleteItem,
+  removeDriverNameFromItem,
+  updateItem,
+} from './helpers/firebaseHelpers';
 import { Button } from './components/Button/Button';
 
 const App = () => {
@@ -25,8 +30,9 @@ const App = () => {
     const existingItem = items.find((item) => item.date === selectedDayString);
 
     try {
+      // If item with selected date exists in the db, update it
       if (existingItem) {
-        await updateDriverName(existingItem.id, driverName);
+        await updateItem(existingItem.id, driverName);
         setItems((prevItems) =>
           prevItems.map((item) =>
             item.id === existingItem.id
@@ -35,7 +41,7 @@ const App = () => {
           )
         );
       } else {
-        const newItem = await addNewDriverEntry(selectedDayString, driverName);
+        const newItem = await addNewItem(selectedDayString, driverName);
         setItems((prevItems) => {
           const updatedItems = [...prevItems, newItem];
           const sortedItems = updatedItems.sort((a, b) => {
@@ -55,6 +61,7 @@ const App = () => {
     handleCloseModal();
   };
 
+  // Scroll to today's date if it exists
   useEffect(() => {
     if (!listContainerRef.current) return;
 
@@ -70,6 +77,34 @@ const App = () => {
       }
     }
   }, [items]);
+
+  const handleDeleteName = async (itemId: string, name: string) => {
+    setItems((prevItems) => {
+      const updatedItems = prevItems.map((item) =>
+        item.id === itemId
+          ? { ...item, names: item.names.filter((n) => n !== name) }
+          : item
+      );
+
+      // Check if any item has an empty `names` array and if so, delete the entire document
+      const filteredItems = updatedItems.filter(
+        (item) => item.names.length > 0
+      );
+
+      if (filteredItems.length !== updatedItems.length) {
+        const emptyItem = updatedItems.find(
+          (item) => item.id === itemId && item.names.length === 0
+        );
+        if (emptyItem) {
+          deleteItem(itemId);
+        }
+      } else {
+        removeDriverNameFromItem(itemId, name);
+      }
+
+      return filteredItems;
+    });
+  };
 
   return (
     <div className="my-date-picker">
@@ -92,7 +127,11 @@ const App = () => {
 
       <div className="item-list" ref={listContainerRef}>
         {items.map((item) => (
-          <ItemList key={item.id} item={item} />
+          <ItemList
+            key={item.id}
+            item={item}
+            handleDeleteName={handleDeleteName}
+          />
         ))}
       </div>
     </div>

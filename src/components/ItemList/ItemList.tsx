@@ -1,12 +1,22 @@
 import { getDayOfWeek } from '../../helpers/calendarHelpers';
 import { Item } from '../../types';
 import styles from './ItemList.module.css';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const List: React.FC<{ item: Item }> = ({ item }) => {
+type ListProps = {
+  item: Item;
+  handleDeleteName: (itemId: string, name: string) => void;
+};
+
+const List = ({ item, handleDeleteName }: ListProps) => {
   const date = new Date(item.date);
   const day = getDayOfWeek(date);
   const dateString = date.toLocaleDateString();
   const isToday = item.date === new Date().toDateString();
+
+  const deleteName = (name: string) => {
+    handleDeleteName(item.id, name);
+  };
 
   return (
     <div className={isToday ? styles.itemToday : styles.item}>
@@ -15,7 +25,14 @@ const List: React.FC<{ item: Item }> = ({ item }) => {
       </p>
       <ul className={styles.itemNames}>
         {item.names.map((name) => (
-          <li key={name}>{name}</li>
+          <li
+            className={styles.itemName}
+            key={name}
+            onClick={() => deleteName(name)}
+          >
+            {name}
+            <DeleteIcon />
+          </li>
         ))}
       </ul>
     </div>

@@ -1,6 +1,8 @@
 import {
+  arrayRemove,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   setDoc,
   updateDoc,
@@ -8,22 +10,7 @@ import {
 import { db } from '../config/firebaseConfig';
 import { Item } from '../types';
 
-export const updateDriverName = async (
-  documentId: string,
-  driverName: string
-): Promise<void> => {
-  try {
-    const docRef = doc(db, 'kierowcy', documentId);
-    await updateDoc(docRef, {
-      names: arrayUnion(driverName),
-    });
-  } catch (error) {
-    console.error('Error updating document:', error);
-    throw new Error('Failed to update driver name.');
-  }
-};
-
-export const addNewDriverEntry = async (
+export const addNewItem = async (
   date: string,
   driverName: string
 ): Promise<Item> => {
@@ -38,6 +25,46 @@ export const addNewDriverEntry = async (
     return newItem;
   } catch (error) {
     console.error('Error creating new document:', error);
-    throw new Error('Failed to add new driver entry.');
+    throw new Error('Failed to add new driver.');
+  }
+};
+
+export const updateItem = async (
+  documentId: string,
+  driverName: string
+): Promise<void> => {
+  try {
+    const docRef = doc(db, 'kierowcy', documentId);
+    await updateDoc(docRef, {
+      names: arrayUnion(driverName),
+    });
+  } catch (error) {
+    console.error('Error updating document:', error);
+    throw new Error('Failed to update driver name.');
+  }
+};
+
+export const deleteItem = async (documentId: string): Promise<void> => {
+  try {
+    const docRef = doc(db, 'kierowcy', documentId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error('Error deleting document:', error);
+    throw new Error('Failed to delete document.');
+  }
+};
+
+export const removeDriverNameFromItem = async (
+  documentId: string,
+  name: string
+): Promise<void> => {
+  try {
+    const docRef = doc(db, 'kierowcy', documentId);
+    await updateDoc(docRef, {
+      names: arrayRemove(name),
+    });
+  } catch (error) {
+    console.error('Error removing name from document:', error);
+    throw new Error('Failed to remove driver name.');
   }
 };

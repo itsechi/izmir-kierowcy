@@ -31,3 +31,8 @@
   list-style: none;
   text-align: right;
 }
+
+.itemName {
+  display: flex;
+  cursor: pointer;
+}
