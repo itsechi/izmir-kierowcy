@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import 'react-day-picker/style.css';
 import useFetchItems from './hooks/useFetchItems';
 import ItemList from './components/ItemList/ItemList';
@@ -9,10 +9,12 @@ import {
 } from './helpers/firebaseHelpers';
 import { Button } from './components/Button/Button';
 import useItemForm from './hooks/useItemForm';
+import useModal from './hooks/useModal';
+import useScrollToToday from './hooks/useScrollToToday';
 
 const App = () => {
   const { items, setItems } = useFetchItems();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isModalOpen, handleOpenModal, handleCloseModal } = useModal();
   const {
     formState,
     handleSubmit,
@@ -20,27 +22,9 @@ const App = () => {
     handleDriverNameChange,
   } = useItemForm(items, setItems);
 
-  const listContainerRef = useRef<HTMLDivElement>(null);
-
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-
   // Scroll to today's date if it exists
-  useEffect(() => {
-    if (!listContainerRef.current) return;
-
-    const todayDateString = new Date().toDateString();
-    const todayItem = items.find((item) => item.date === todayDateString);
-    if (todayItem) {
-      const index = items.indexOf(todayItem);
-      const itemElement = listContainerRef.current.children[
-        index
-      ] as HTMLDivElement;
-      if (itemElement) {
-        itemElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  }, [items]);
+  const listContainerRef = useRef<HTMLDivElement>(null);
+  useScrollToToday(items, listContainerRef);
 
   const handleDeleteName = async (itemId: string, name: string) => {
     setItems((prevItems) => {
