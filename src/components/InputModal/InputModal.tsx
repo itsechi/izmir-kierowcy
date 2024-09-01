@@ -7,11 +7,13 @@ type InputModalProps = {
   formState: {
     selectedDay: Date;
     driverName: string;
+    towar: boolean;
   };
   handleCloseModal: () => void;
   handleSubmit: () => void;
   handleSelectedDayChange: (date: Date) => void;
   handleDriverNameChange: (name: string) => void;
+  handleCheckboxChange: (status: boolean) => void;
 };
 
 const InputModal: React.FC<InputModalProps> = ({
@@ -20,6 +22,7 @@ const InputModal: React.FC<InputModalProps> = ({
   handleSubmit,
   handleSelectedDayChange,
   handleDriverNameChange,
+  handleCheckboxChange,
 }) => {
   const onDaySelect = (date: Date) => {
     if (!date) return;
@@ -51,6 +54,14 @@ const InputModal: React.FC<InputModalProps> = ({
           placeholder="Wpisz imię kierowcy"
           className={styles.modalInput}
         />
+        <label>
+          Towar
+          <input
+            type="checkbox"
+            checked={formState.towar}
+            onChange={(e) => handleCheckboxChange(e.target.checked)}
+          />
+        </label>
 
         <Button onClick={handleSubmit} styling={'submitBtn'}>
           Dodaj

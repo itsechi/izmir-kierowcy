@@ -12,13 +12,18 @@ import { Item } from '../types';
 
 export const addNewItem = async (
   date: string,
-  driverName: string
+  driverName: string,
+  towar: boolean
 ): Promise<Item> => {
   try {
     const newDocRef = doc(collection(db, 'kierowcy'));
+    const newDriver = {
+      name: driverName,
+      towar,
+    };
     const newItem: Item = {
       id: newDocRef.id,
-      names: [driverName],
+      names: [newDriver],
       date,
     };
     await setDoc(newDocRef, newItem);
@@ -31,12 +36,17 @@ export const addNewItem = async (
 
 export const updateItem = async (
   documentId: string,
-  driverName: string
+  driverName: string,
+  towar: boolean
 ): Promise<void> => {
   try {
     const docRef = doc(db, 'kierowcy', documentId);
+    const newDriver = {
+      name: driverName,
+      towar,
+    };
     await updateDoc(docRef, {
-      names: arrayUnion(driverName),
+      names: arrayUnion(newDriver),
     });
   } catch (error) {
     console.error('Error updating document:', error);

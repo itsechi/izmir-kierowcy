@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { addNewItem, updateItem } from '../helpers/firebaseHelpers';
-import { Item } from '../types';
+import { Driver, Item } from '../types';
 
 const useItemForm = (
   items: Item[],
@@ -9,6 +9,7 @@ const useItemForm = (
   const [formState, setFormState] = useState({
     selectedDay: new Date(),
     driverName: '',
+    towar: false,
   });
 
   const handleDriverNameChange = (name: string) => {
@@ -31,6 +32,15 @@ const useItemForm = (
     });
   };
 
+  const handleCheckboxChange = (status: boolean) => {
+    setFormState((prevState) => {
+      return {
+        ...prevState,
+        towar: status,
+      };
+    });
+  };
+
   const handleSubmit = async () => {
     if (!formState.selectedDay) return;
 
@@ -40,18 +50,32 @@ const useItemForm = (
     try {
       // If item with selected date exists in the db, update it
       if (existingItem) {
-        await updateItem(existingItem.id, formState.driverName);
+        await updateItem(
+          existingItem.id,
+          formState.driverName,
+          formState.towar
+        );
         setItems((prevItems) =>
-          prevItems.map((item) =>
-            item.id === existingItem.id
-              ? { ...item, names: [...item.names, formState.driverName] }
-              : item
-          )
+          prevItems.map((item) => {
+            if (item.id === existingItem.id) {
+              const newDriver: Driver = {
+                name: formState.driverName,
+                towar: formState.towar,
+              };
+              return {
+                ...item,
+                names: [...item.names, newDriver],
+              };
+            } else {
+              return item;
+            }
+          })
         );
       } else {
         const newItem = await addNewItem(
           selectedDayString,
-          formState.driverName
+          formState.driverName,
+          formState.towar
         );
         setItems((prevItems) => {
           const updatedItems = [...prevItems, newItem];
@@ -71,6 +95,7 @@ const useItemForm = (
     setFormState({
       driverName: '',
       selectedDay: new Date(),
+      towar: false,
     });
   };
 
@@ -79,6 +104,7 @@ const useItemForm = (
     handleSubmit,
     handleDriverNameChange,
     handleSelectedDayChange,
+    handleCheckboxChange,
   };
 };
 

@@ -17,6 +17,7 @@ const App = () => {
     handleSubmit,
     handleSelectedDayChange,
     handleDriverNameChange,
+    handleCheckboxChange,
   } = useItemForm(items, setItems);
   const { handleDeleteName } = useItemActions(setItems);
 
@@ -37,6 +38,7 @@ const App = () => {
           handleSubmit={handleSubmit}
           handleSelectedDayChange={handleSelectedDayChange}
           handleDriverNameChange={handleDriverNameChange}
+          handleCheckboxChange={handleCheckboxChange}
         />
       )}
 

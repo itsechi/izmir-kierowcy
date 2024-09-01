@@ -11,7 +11,7 @@ const useItemActions = (
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) =>
         item.id === itemId
-          ? { ...item, names: item.names.filter((n) => n !== name) }
+          ? { ...item, names: item.names.filter((n) => n.name !== name) }
           : item
       );
 

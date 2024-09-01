@@ -43,3 +43,9 @@
   display: flex;
   cursor: pointer;
 }
+
+.itemStatus {
+  font-weight: bold;
+  /* background-color: rgba(105, 208, 255, 0.445);
+  padding: 0.25rem; */
+}
