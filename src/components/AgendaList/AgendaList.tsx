@@ -1,14 +1,38 @@
 import { getDayOfWeek } from '../../helpers/calendarHelpers';
 import { Item } from '../../types';
-import styles from './ItemList.module.css';
+import styles from './AgendaList.module.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-type ListProps = {
+type AgendaListProps = {
+  items: Item[];
+  listContainerRef: React.RefObject<HTMLDivElement>;
+  handleDeleteName: (itemId: string, name: string) => void;
+};
+
+const AgendaList = ({
+  items,
+  listContainerRef,
+  handleDeleteName,
+}: AgendaListProps) => {
+  return (
+    <div className={styles.list} ref={listContainerRef}>
+      {items.map((item) => (
+        <AgendaItem
+          key={item.id}
+          item={item}
+          handleDeleteName={handleDeleteName}
+        />
+      ))}
+    </div>
+  );
+};
+
+type AgendaItemProps = {
   item: Item;
   handleDeleteName: (itemId: string, name: string) => void;
 };
 
-const List = ({ item, handleDeleteName }: ListProps) => {
+const AgendaItem = ({ item, handleDeleteName }: AgendaItemProps) => {
   const date = new Date(item.date);
   const day = getDayOfWeek(date);
   const dateString = date.toLocaleDateString();
@@ -39,4 +63,4 @@ const List = ({ item, handleDeleteName }: ListProps) => {
   );
 };
 
-export default List;
+export default AgendaList;

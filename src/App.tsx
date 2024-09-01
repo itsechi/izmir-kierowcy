@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import 'react-day-picker/style.css';
 import useFetchItems from './hooks/useFetchItems';
-import ItemList from './components/ItemList/ItemList';
+import AgendaList from './components/AgendaList/AgendaList';
 import InputModal from './components/InputModal/InputModal';
 import { Button } from './components/Button/Button';
 import useItemForm from './hooks/useItemForm';
@@ -40,15 +40,11 @@ const App = () => {
         />
       )}
 
-      <div className="item-list" ref={listContainerRef}>
-        {items.map((item) => (
-          <ItemList
-            key={item.id}
-            item={item}
-            handleDeleteName={handleDeleteName}
-          />
-        ))}
-      </div>
+      <AgendaList
+        listContainerRef={listContainerRef}
+        handleDeleteName={handleDeleteName}
+        items={items}
+      />
     </div>
   );
 };
