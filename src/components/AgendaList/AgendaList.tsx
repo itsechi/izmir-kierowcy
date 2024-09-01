@@ -1,7 +1,7 @@
+import { Edit, Delete } from '@mui/icons-material';
 import { getDayOfWeek } from '../../helpers/calendarHelpers';
 import { Item } from '../../types';
 import styles from './AgendaList.module.css';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 type AgendaListProps = {
   items: Item[];
@@ -55,7 +55,8 @@ const AgendaItem = ({ item, handleDeleteName }: AgendaItemProps) => {
             onClick={() => deleteName(name)}
           >
             {name}
-            <DeleteIcon />
+            {/* <Edit /> */}
+            <Delete />
           </li>
         ))}
       </ul>

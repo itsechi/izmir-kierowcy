@@ -1,7 +1,7 @@
 import styles from './InputModal.module.css';
 import { DayPicker } from 'react-day-picker';
 import { pl } from 'date-fns/locale';
-import { Button } from '../Button/Button';
+import Button from '../Button/Button';
 
 type InputModalProps = {
   formState: {

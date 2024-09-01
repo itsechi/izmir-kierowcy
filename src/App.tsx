@@ -3,7 +3,7 @@ import 'react-day-picker/style.css';
 import useFetchItems from './hooks/useFetchItems';
 import AgendaList from './components/AgendaList/AgendaList';
 import InputModal from './components/InputModal/InputModal';
-import { Button } from './components/Button/Button';
+import Button from './components/Button/Button';
 import useItemForm from './hooks/useItemForm';
 import useModal from './hooks/useModal';
 import useScrollToToday from './hooks/useScrollToToday';
