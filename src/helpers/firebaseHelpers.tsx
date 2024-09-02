@@ -1,5 +1,4 @@
 import {
-  arrayRemove,
   arrayUnion,
   collection,
   deleteDoc,
@@ -8,7 +7,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { db } from '../config/firebaseConfig';
-import { Item } from '../types';
+import { Driver, Item } from '../types';
 
 export const addNewItem = async (
   id: string,
@@ -70,12 +69,12 @@ export const deleteItem = async (documentId: string): Promise<void> => {
 
 export const removeDriverNameFromItem = async (
   documentId: string,
-  driverId: string
+  updatedDrivers: Driver[] | undefined
 ): Promise<void> => {
   try {
     const docRef = doc(db, 'kierowcy', documentId);
     await updateDoc(docRef, {
-      drivers: arrayRemove(driverId),
+      drivers: updatedDrivers,
     });
   } catch (error) {
     console.error('Error removing name from document:', error);

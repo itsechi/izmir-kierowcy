@@ -28,7 +28,10 @@ const useItemActions = (
           deleteItem(itemId);
         }
       } else {
-        removeDriverNameFromItem(itemId, driverId);
+        const updatedDrivers = updatedItems.find(
+          (item) => item.id === itemId
+        )?.drivers;
+        removeDriverNameFromItem(itemId, updatedDrivers);
       }
 
       return filteredItems;
