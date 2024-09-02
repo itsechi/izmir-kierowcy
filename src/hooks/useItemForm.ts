@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const useItemForm = (
   items: Item[],
-  setItems: React.Dispatch<React.SetStateAction<Item[]>>
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>,
+  handleCloseModal: () => void
 ) => {
   const [formState, setFormState] = useState({
     selectedDay: new Date(),
@@ -102,12 +103,13 @@ const useItemForm = (
       console.error('Error updating or creating document:', error);
     }
 
-    // handleCloseModal();
+    handleCloseModal();
     setFormState({
       driverName: '',
       selectedDay: new Date(),
       towar: false,
     });
+    setFormError('');
   };
 
   return {

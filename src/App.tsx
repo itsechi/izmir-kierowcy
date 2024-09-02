@@ -19,7 +19,7 @@ const App = () => {
     handleSelectedDayChange,
     handleDriverNameChange,
     handleCheckboxChange,
-  } = useItemForm(items, setItems);
+  } = useItemForm(items, setItems, handleCloseModal);
   const { handleDeleteName } = useItemActions(setItems);
 
   // Scroll to today's date if it exists
