@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { addNewItem, updateItem } from '../helpers/firebaseHelpers';
 import { Driver, Item } from '../types';
+import { v4 as uuidv4 } from 'uuid';
 
 const useItemForm = (
   items: Item[],
@@ -55,8 +56,10 @@ const useItemForm = (
 
     try {
       // If item with selected date exists in the db, update it
+      const id = uuidv4();
       if (existingItem) {
         await updateItem(
+          id,
           existingItem.id,
           formState.driverName,
           formState.towar
@@ -65,12 +68,13 @@ const useItemForm = (
           prevItems.map((item) => {
             if (item.id === existingItem.id) {
               const newDriver: Driver = {
+                id,
                 name: formState.driverName,
                 towar: formState.towar,
               };
               return {
                 ...item,
-                names: [...item.names, newDriver],
+                drivers: [...item.drivers, newDriver],
               };
             } else {
               return item;
@@ -79,6 +83,7 @@ const useItemForm = (
         );
       } else {
         const newItem = await addNewItem(
+          id,
           selectedDayString,
           formState.driverName,
           formState.towar

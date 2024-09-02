@@ -11,6 +11,7 @@ import { db } from '../config/firebaseConfig';
 import { Item } from '../types';
 
 export const addNewItem = async (
+  id: string,
   date: string,
   driverName: string,
   towar: boolean
@@ -18,12 +19,13 @@ export const addNewItem = async (
   try {
     const newDocRef = doc(collection(db, 'kierowcy'));
     const newDriver = {
+      id,
       name: driverName,
       towar,
     };
     const newItem: Item = {
       id: newDocRef.id,
-      names: [newDriver],
+      drivers: [newDriver],
       date,
     };
     await setDoc(newDocRef, newItem);
@@ -35,6 +37,7 @@ export const addNewItem = async (
 };
 
 export const updateItem = async (
+  id: string,
   documentId: string,
   driverName: string,
   towar: boolean
@@ -42,11 +45,12 @@ export const updateItem = async (
   try {
     const docRef = doc(db, 'kierowcy', documentId);
     const newDriver = {
+      id,
       name: driverName,
       towar,
     };
     await updateDoc(docRef, {
-      names: arrayUnion(newDriver),
+      drivers: arrayUnion(newDriver),
     });
   } catch (error) {
     console.error('Error updating document:', error);
@@ -66,12 +70,12 @@ export const deleteItem = async (documentId: string): Promise<void> => {
 
 export const removeDriverNameFromItem = async (
   documentId: string,
-  name: string
+  driverId: string
 ): Promise<void> => {
   try {
     const docRef = doc(db, 'kierowcy', documentId);
     await updateDoc(docRef, {
-      names: arrayRemove(name),
+      drivers: arrayRemove(driverId),
     });
   } catch (error) {
     console.error('Error removing name from document:', error);

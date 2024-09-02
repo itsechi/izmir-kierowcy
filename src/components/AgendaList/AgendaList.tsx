@@ -38,8 +38,8 @@ const AgendaItem = ({ item, handleDeleteName }: AgendaItemProps) => {
   const dateString = date.toLocaleDateString();
   const isToday = item.date === new Date().toDateString();
 
-  const deleteName = (name: string) => {
-    handleDeleteName(item.id, name);
+  const deleteName = (driverId: string) => {
+    handleDeleteName(item.id, driverId);
   };
 
   return (
@@ -48,12 +48,12 @@ const AgendaItem = ({ item, handleDeleteName }: AgendaItemProps) => {
         {day} <span className={styles.itemDate}>{dateString}</span>
       </p>
       <ul className={styles.itemNames}>
-        {item.names.map((driver, i) => (
-          <li className={styles.itemName} key={i}>
+        {item.drivers.map((driver) => (
+          <li className={styles.itemName} key={driver.id}>
             {driver.towar && <span className={styles.itemStatus}>T</span>}
             {driver.name}
             {/* <Edit /> */}
-            <Delete onClick={() => deleteName(driver.name)} />
+            <Delete onClick={() => deleteName(driver.id)} />
           </li>
         ))}
       </ul>

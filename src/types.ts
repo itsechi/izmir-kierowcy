@@ -1,10 +1,11 @@
 export interface Item {
   id: string;
   date: string;
-  names: Driver[];
+  drivers: Driver[];
 }
 
 export interface Driver {
+  id: string;
   name: string;
   towar: boolean;
 }
