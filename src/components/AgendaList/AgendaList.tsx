@@ -49,15 +49,11 @@ const AgendaItem = ({ item, handleDeleteName }: AgendaItemProps) => {
       </p>
       <ul className={styles.itemNames}>
         {item.names.map((driver, i) => (
-          <li
-            className={styles.itemName}
-            key={i}
-            onClick={() => deleteName(driver.name)}
-          >
-            {driver.towar && <span className={styles.itemStatus}>T</span>}{' '}
+          <li className={styles.itemName} key={i}>
+            {driver.towar && <span className={styles.itemStatus}>T</span>}
             {driver.name}
             <Edit />
-            <Delete />
+            <Delete onClick={() => deleteName(driver.name)} />
           </li>
         ))}
       </ul>
