@@ -14,6 +14,7 @@ const App = () => {
   const { isModalOpen, handleOpenModal, handleCloseModal } = useModal();
   const {
     formState,
+    formError,
     handleSubmit,
     handleSelectedDayChange,
     handleDriverNameChange,
@@ -33,6 +34,7 @@ const App = () => {
 
       {isModalOpen && (
         <InputModal
+          formError={formError}
           handleCloseModal={handleCloseModal}
           formState={formState}
           handleSubmit={handleSubmit}

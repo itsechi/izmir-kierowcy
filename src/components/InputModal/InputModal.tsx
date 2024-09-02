@@ -14,11 +14,13 @@ type InputModalProps = {
   handleSelectedDayChange: (date: Date) => void;
   handleDriverNameChange: (name: string) => void;
   handleCheckboxChange: (status: boolean) => void;
+  formError: string;
 };
 
 const InputModal: React.FC<InputModalProps> = ({
   handleCloseModal,
   formState,
+  formError,
   handleSubmit,
   handleSelectedDayChange,
   handleDriverNameChange,
@@ -47,14 +49,16 @@ const InputModal: React.FC<InputModalProps> = ({
         />
 
         <h2>Wpisz imię kierowcy</h2>
+        {formError && <p className={styles.formError}>{formError}</p>}
         <input
           type="text"
           value={formState.driverName}
           onChange={(e) => handleDriverNameChange(e.target.value)}
           placeholder="Wpisz imię kierowcy"
           className={styles.modalInput}
+          required
         />
-        <label>
+        <label className={styles.formCheckbox}>
           Towar
           <input
             type="checkbox"

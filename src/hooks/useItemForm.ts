@@ -11,9 +11,9 @@ const useItemForm = (
     driverName: '',
     towar: false,
   });
+  const [formError, setFormError] = useState('');
 
   const handleDriverNameChange = (name: string) => {
-    // Add validation
     setFormState((prevState) => {
       return {
         ...prevState,
@@ -23,7 +23,6 @@ const useItemForm = (
   };
 
   const handleSelectedDayChange = (date: Date) => {
-    // Add validation
     setFormState((prevState) => {
       return {
         ...prevState,
@@ -42,7 +41,14 @@ const useItemForm = (
   };
 
   const handleSubmit = async () => {
-    if (!formState.selectedDay) return;
+    if (!formState.selectedDay) {
+      setFormError('Wybierz dzień');
+      return;
+    }
+    if (formState.driverName.trim().length === 0) {
+      setFormError('Pole nie może być puste');
+      return;
+    }
 
     const selectedDayString = formState.selectedDay.toDateString();
     const existingItem = items.find((item) => item.date === selectedDayString);
@@ -105,6 +111,7 @@ const useItemForm = (
     handleDriverNameChange,
     handleSelectedDayChange,
     handleCheckboxChange,
+    formError,
   };
 };
 

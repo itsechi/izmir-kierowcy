@@ -52,7 +52,7 @@ const AgendaItem = ({ item, handleDeleteName }: AgendaItemProps) => {
           <li className={styles.itemName} key={i}>
             {driver.towar && <span className={styles.itemStatus}>T</span>}
             {driver.name}
-            <Edit />
+            {/* <Edit /> */}
             <Delete onClick={() => deleteName(driver.name)} />
           </li>
         ))}
